@@ -4,4 +4,6 @@ export const SIGN_IN = '/signin';
 export const HOME = '/home';
 export const ACCOUNT = '/account';
 export const ADMIN = '/admin';
+export const MATCH = '/match';
+export const MATCH_CREATE = '/newmatch';
 export const PASSWORD_FORGET = '/pw-forget';

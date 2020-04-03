@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import {
   Menu as MenuIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon,
-  Home as HomeIcon, AccountBox as AccountBoxIcon, Settings as SettingsIcon,
+  Home as HomeIcon, AccountBox as AccountBoxIcon, Settings as SettingsIcon, SportsTennis,
   AccountCircle, Translate as TranslateIcon
 } from '@material-ui/icons';
 
@@ -138,6 +138,12 @@ const HeaderAndDrawer = () => {
           <HomeIcon />
         </ListItemIcon>
         <ListItemText primary="Home" />
+      </ListItem>
+      <ListItem button component={Link} to={ROUTES.MATCH} onClick={handleDrawerClose}>
+        <ListItemIcon>
+          <SportsTennis />
+        </ListItemIcon>
+        <ListItemText primary="Match" />
       </ListItem>
       <ListItem button component={Link} to={ROUTES.ACCOUNT} onClick={handleDrawerClose}>
         <ListItemIcon>
