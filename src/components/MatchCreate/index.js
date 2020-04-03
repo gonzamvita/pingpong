@@ -13,7 +13,13 @@ class MatchCreatePage extends Component {
         this.state = {
             loading: true,
             users: [],
-            match: {},
+            match: {
+                host: '',
+                host_uid: '',
+                opponent: '',
+                opponent_uid: '',
+                status: 'pending'
+            },
         };
         console.log(this.props)
     }
@@ -39,7 +45,7 @@ class MatchCreatePage extends Component {
                     this.setState({
                         users: usersList.filter((u) => u.uid !== this.props.authUser.uid),
                         loading: false,
-                        currentUser: this.props.authUser,
+                        currentUser: usersList.find((u) => u.uid === this.props.authUser.uid),
                     });
                 });
         }
@@ -49,8 +55,10 @@ class MatchCreatePage extends Component {
     onChange = (e, value) => {
         this.setState({
             match: {
-                opponent: value.uid,
-                host: this.state.currentUser.uid
+                host: this.state.currentUser.username,
+                host_uid: this.state.currentUser.uid,
+                opponent: value.username,
+                opponent_uid: value.uid,
             }
         }
         );
@@ -62,9 +70,9 @@ class MatchCreatePage extends Component {
         console.log(this.props)
         return (
             <div>
-                <h1>Match</h1>
+                <h1>New Match</h1>
                 <form>
-                    <FormHelperText>Select a player to play the match with:</FormHelperText>
+                    <FormHelperText>Challenge a player to play a match</FormHelperText>
                     <Autocomplete
                         id="opponent"
                         loading={loading}
@@ -85,7 +93,7 @@ class MatchCreatePage extends Component {
 
 const NewMatchLink = () => (
     <p>
-        <Link to={ROUTES.MATCH_CREATE}>New Match!</Link>
+        <Link to={ROUTES.MATCH_CREATE} style={{ color: '#FFF' }}>New Match!</Link>
     </p>
 );
 

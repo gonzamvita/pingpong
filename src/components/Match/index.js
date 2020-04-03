@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { NewMatchLink } from '../MatchCreate'
+import MatchSummaryCard from '../MatchSummary'
 import { withFirebase } from '../Firebase';
+
+import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 
 const INITIAL_MATCH_STATE = {
     player1Id: '',
@@ -19,9 +23,10 @@ class MatchPage extends Component {
             ...INITIAL_MATCH_STATE
         };
     }
+
     componentDidMount() {
         this.setState({ loading: true });
-
+        
         this.props.firebase.getMatches().then(querySnapshot => {
             const matchesList = querySnapshot.docs.map(doc => doc.data())
             this.setState({
@@ -30,25 +35,18 @@ class MatchPage extends Component {
             });
         });
     }
-
+    
     render() {
-        const { matches, loading, player1Id, player2Id } = this.state;
-
-        const isInvalid =
-            player1Id === '' ||
-            player2Id === '';
+        const { matches, loading } = this.state;
 
         return (
             <div>
-                <h1>Match</h1>
-                <NewMatchLink />
-                <form onSubmit={this.onSubmit}>
-                    <select>
-                        <option>paco</option>
-                        <option>luis</option>
-                    </select>
-                    <button disabled={isInvalid} type="submit">Sign Up</button>
-                </form>
+                <h1>Matches</h1>
+                <div className={1}>
+                    <Button variant="contained" color="primary" href="#contained-buttons">
+                        <NewMatchLink />
+                    </Button>
+                </div>
                 {loading && <div>Loading ...</div>}
                 <MatchList matches={matches} />
             </div>
@@ -57,23 +55,17 @@ class MatchPage extends Component {
 }
 
 const MatchList = ({ matches }) => (
-    <ul>
-        {matches.map(user => (
-            <li key={user.uid}>
-                <span>
-                    <strong>Username:</strong> {user.username}
-                </span>
-                <br />
-                <span>
-                    <strong>E-Mail:</strong> {user.email}
-                </span>
-                <br />
-                <span>
-                    <strong>UID:</strong> {user.uid}
-                </span>
-            </li>
-        ))}
-    </ul>
+    <div style={{ width: '100%', background: 'transparent' }}>
+        <Box display="flex" flexDirection="column" p={1} m={1} bgcolor="background.white">
+            {
+                matches.map(match => (
+                    <Box p={1} bgcolor="grey.300">
+                        <MatchSummaryCard match={match} />
+                    </Box>
+                ))
+            }
+        </Box>
+    </div>
 );
 
 export default withFirebase(MatchPage);

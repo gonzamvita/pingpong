@@ -13,6 +13,7 @@
 /build
 
 # misc
+/.firebase
 package-lock.json
 .env
 .DS_Store
