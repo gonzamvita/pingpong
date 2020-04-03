@@ -21,7 +21,7 @@ const App = () => (
       <Route exact path={ROUTES.LANDING} component={LandingPage} />
       <Route path={ROUTES.MATCH} component={MatchPage} />
       <Route path={ROUTES.MATCH_CREATE} component={MatchCreatePage} />
-      <Route path={ROUTES.SIGN_UP} component={SignUpPage} />gyh
+      <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
       <Route path={ROUTES.SIGN_IN} component={SignInPage} />
       <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
       <Route path={ROUTES.HOME} component={HomePage} />
