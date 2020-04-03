@@ -11,25 +11,11 @@ class MatchCreatePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
+            loading: true,
             users: [],
             match: {},
         };
-    }
-
-    componentDidMount() {
-        this.setState({ loading: true });
-
-        this.props.firebase.getUsers()
-            // .where('uid', '!=', this.props.authUser.uid)
-            .then(querySnapshot => {
-                const usersList = querySnapshot.docs.map(doc => doc.data())
-                this.setState({
-                    users: usersList,
-                    loading: false,
-                    currentUser: 'currentUser',
-                });
-            });
+        console.log(this.props)
     }
 
     onSubmit = (e) => {
@@ -45,11 +31,26 @@ class MatchCreatePage extends Component {
         e.preventDefault()
     }
 
+    onOpen = (e) => {
+        if (this.state.loading) {
+            this.props.firebase.getUsers()
+                .then(querySnapshot => {
+                    const usersList = querySnapshot.docs.map(doc => doc.data())
+                    this.setState({
+                        users: usersList.filter((u) => u.uid !== this.props.authUser.uid),
+                        loading: false,
+                        currentUser: this.props.authUser,
+                    });
+                });
+        }
+        e.preventDefault()
+    }
+
     onChange = (e, value) => {
         this.setState({
             match: {
                 opponent: value.uid,
-                host: this.state.currentUser
+                host: this.state.currentUser.uid
             }
         }
         );
@@ -70,6 +71,7 @@ class MatchCreatePage extends Component {
                         autoComplete={true}
                         options={users}
                         onChange={this.onChange}
+                        onOpen={this.onOpen}
                         style={{ width: 300 }}
                         getOptionLabel={(user) => user.username}
                         renderInput={(params) => <TextField {...params} label="Opponent" variant="outlined" />}

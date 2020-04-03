@@ -38,9 +38,13 @@ class Firebase {
 
     getUsers = () => this.db.collection('users').get();
 
+    usersCollection = () => this.db.collection('users')
+
     // MATCH API
     addMatch = match => this.db.collection('matches').add(match);
 
     getMatches = () => this.db.collection('matches').get();
+
+    matchesCollection = () => this.db.collection('matches')
 }
 export default Firebase;
