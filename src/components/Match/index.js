@@ -3,6 +3,12 @@ import { NewMatchLink } from '../MatchCreate'
 import MatchSummaryCard from '../MatchSummary'
 import { withFirebase } from '../Firebase';
 
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
@@ -20,8 +26,13 @@ class MatchPage extends Component {
         this.state = {
             loading: false,
             matches: [],
+            filteredMatches: [],
+            all: true,
+            ranked: false,
+            finished: false,
             ...INITIAL_MATCH_STATE
         };
+        this.handleFilterChange = this.handleFilterChange.bind(this)
     }
 
     componentDidMount() {
@@ -31,24 +42,33 @@ class MatchPage extends Component {
             const matchesList = querySnapshot.docs.map(doc => doc.data())
             this.setState({
                 matches: matchesList,
+                filteredMatches: matchesList,
                 loading: false,
             });
         });
     }
 
-    render() {
-        const { matches, loading } = this.state;
+    handleFilterChange(name, value) {
+        console.log("MatchPage -> handleFilterChange -> name, value", name, value)
+        this.setState({ [name]: value })
+    }
 
+    render() {
+        const { filteredMatches, loading, all, ranked, finished } = this.state;
+        const filters = { all, ranked, finished }
         return (
             <div>
                 <h1>Matches</h1>
-                <div className={1}>
+                <div>
+                    <FilterGroup filters={filters} onFilterChange={this.handleFilterChange} />
+                </div>
+                <div>
                     <Button variant="contained" color="primary">
                         <NewMatchLink />
                     </Button>
                 </div>
                 {loading && <div>Loading ...</div>}
-                <MatchList matches={matches} />
+                <MatchList matches={filteredMatches} />
             </div>
         );
     }
@@ -73,5 +93,40 @@ const MatchList = ({ matches }) => (
         </Grid>
     </div>
 );
+
+class FilterGroup extends Component {
+    constructor(props) {
+        super(props)
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {
+        console.log(event.target.checked);
+        this.props.onFilterChange(event.target.name, event.target.checked)
+    }
+
+    render() {
+        return (
+            <FormControl component="fieldset">
+                <FormLabel component="legend">Match Filter</FormLabel>
+                <FormGroup row>
+                    <FormControlLabel
+                        control={<Switch checked={this.props.filters.all} onChange={this.handleChange} name="all" />}
+                        label="My matches"
+                    />
+                    <FormControlLabel
+                        control={<Switch checked={this.props.filters.finished} onChange={this.handleChange} name="finished" />}
+                        label="Finished Matches"
+                    />
+                    <FormControlLabel
+                        control={<Switch checked={this.props.filters.ranked} onChange={this.handleChange} name="ranked" />}
+                        label="Ranked Matches"
+                    />
+                </FormGroup>
+                <FormHelperText>Be careful</FormHelperText>
+            </FormControl>
+        )
+    }
+}
 
 export default withFirebase(MatchPage);
