@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
@@ -14,7 +13,6 @@ import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -52,7 +50,7 @@ export default function MatchSummaryCard(props) {
         <Card className={classes.root}>
             <CardHeader
                 avatar={
-                    <Avatar src="%PUBLIC_URL%/logo192.png" className={classes.avatar} />
+                    <Avatar src="../../public/logo192.png" className={classes.avatar} />
                 }
                 // action={
                 //     <IconButton aria-label="settings">

@@ -4,7 +4,7 @@ import MatchSummaryCard from '../MatchSummary'
 import { withFirebase } from '../Firebase';
 
 import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 
 const INITIAL_MATCH_STATE = {
     player1Id: '',
@@ -26,7 +26,7 @@ class MatchPage extends Component {
 
     componentDidMount() {
         this.setState({ loading: true });
-        
+
         this.props.firebase.getMatches().then(querySnapshot => {
             const matchesList = querySnapshot.docs.map(doc => doc.data())
             this.setState({
@@ -35,7 +35,7 @@ class MatchPage extends Component {
             });
         });
     }
-    
+
     render() {
         const { matches, loading } = this.state;
 
@@ -43,7 +43,7 @@ class MatchPage extends Component {
             <div>
                 <h1>Matches</h1>
                 <div className={1}>
-                    <Button variant="contained" color="primary" href="#contained-buttons">
+                    <Button variant="contained" color="primary">
                         <NewMatchLink />
                     </Button>
                 </div>
@@ -55,16 +55,22 @@ class MatchPage extends Component {
 }
 
 const MatchList = ({ matches }) => (
-    <div style={{ width: '100%', background: 'transparent' }}>
-        <Box display="flex" flexDirection="column" p={1} m={1} bgcolor="background.white">
+    <div style={{ width: '100%', padding: 20 }}>
+        <Grid
+            container
+            spacing={3}
+            direction="row-reverse"
+            justify="flex-start"
+            alignItems="stretch"
+        >
             {
-                matches.map(match => (
-                    <Box p={1} bgcolor="grey.300">
+                matches.map((match, i) => (
+                    <Grid item xs key={i}>
                         <MatchSummaryCard match={match} />
-                    </Box>
+                    </Grid>
                 ))
             }
-        </Box>
+        </Grid>
     </div>
 );
 
