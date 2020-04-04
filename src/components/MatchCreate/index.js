@@ -69,6 +69,7 @@ class MatchCreatePage extends Component {
                 host: this.state.currentUser.username,
                 host_uid: this.state.currentUser.uid,
                 opponent: value.username,
+                opponent_uid: value.uid,
                 match_date: match.match_date,
                 players: match.players,
                 match_type: match.match_type
@@ -84,6 +85,7 @@ class MatchCreatePage extends Component {
                 host: match.host,
                 host_uid: match.host_uid,
                 opponent: match.opponent,
+                opponent_uid: match.opponent_uid,
                 match_date: value,
                 players: match.players,
                 match_type: match.match_type            
@@ -98,6 +100,7 @@ class MatchCreatePage extends Component {
                 host: match.host,
                 host_uid: match.host_uid,
                 opponent: match.opponent,
+                opponent_uid: match.opponent_uid,
                 match_date: match.match_date,
                 players: value,
                 match_type: match.match_type            
@@ -112,6 +115,7 @@ class MatchCreatePage extends Component {
                 host: match.host,
                 host_uid: match.host_uid,
                 opponent: match.opponent,
+                opponent_uid: match.opponent_uid,
                 match_date: match.match_date,
                 players: match.players,
                 match_type: value            
