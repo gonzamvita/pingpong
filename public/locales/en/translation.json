@@ -1,3 +1,12 @@
 {
-    "app_title": "APP Title"
+    "app_title": "PingPong App",
+    "create_match": "Challenge a player to play a match",
+    "new_match": "New match",
+    "create": "Crear",
+    "ranked": "Ranked",
+    "friendly": "Friendly",
+    "match_type": "Match type",
+    "players": "Players",
+    "match_date": "Date"
+
 }

@@ -1,3 +1,11 @@
 {
-    "app_title": "Título de la aplicación"
+    "app_title": "PingPong App",
+    "create_match": "Reta a un partido",
+    "new_match": "Nuevo partido",
+    "create": "Crear",
+    "ranked": "Clasificatorio",
+    "friendly": "Amistoso",
+    "match_type": "Tipo de partido",
+    "players": "Jugadores",
+    "match_date": "Fecha"
 }
