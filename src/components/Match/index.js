@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { NewMatchLink } from '../MatchCreate'
 import MatchSummaryCard from '../MatchSummary'
 import { withFirebase } from '../Firebase';
 
@@ -11,6 +10,9 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import * as ROUTES from '../../constants/routes';
+import { withTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 const INITIAL_MATCH_STATE = {
     player1Id: '',
@@ -54,17 +56,19 @@ class MatchPage extends Component {
     }
 
     render() {
+        const { t } = this.props;
+
         const { filteredMatches, loading, all, ranked, finished } = this.state;
         const filters = { all, ranked, finished }
         return (
             <div>
-                <h1>Matches</h1>
+                <h1>{t('matches')}</h1>
                 <div>
                     <FilterGroup filters={filters} onFilterChange={this.handleFilterChange} />
                 </div>
                 <div>
                     <Button variant="contained" color="primary">
-                        <NewMatchLink />
+                        <Link to={ROUTES.MATCH_CREATE} style={{ color: '#FFF' }}>{t('new_match')}</Link>
                     </Button>
                 </div>
                 {loading && <div>Loading ...</div>}
@@ -106,6 +110,8 @@ class FilterGroup extends Component {
     }
 
     render() {
+        const { t } = this.props;
+
         return (
             <FormControl component="fieldset">
                 <FormLabel component="legend">Match Filter</FormLabel>
@@ -129,4 +135,4 @@ class FilterGroup extends Component {
     }
 }
 
-export default withFirebase(MatchPage);
+export default withFirebase(withTranslation()(MatchPage));

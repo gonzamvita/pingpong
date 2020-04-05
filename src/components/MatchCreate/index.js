@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import 'date-fns';
-import { Link } from 'react-router-dom';
 import {TextField, Button, Typography, 
     RadioGroup, Radio, FormControlLabel, FormLabel, FormControl} from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
@@ -18,6 +17,7 @@ class MatchCreatePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isDisabled: true,
             loading: true,
             users: [],
             match: {
@@ -31,7 +31,13 @@ class MatchCreatePage extends Component {
                 match_type: 'friendly'
             },
         };
+        this.onChange = this.onChange.bind(this);
+        this.onChangeMatchDate = this.onChangeMatchDate.bind(this);
+        this.onChangeMatchType = this.onChangeMatchType.bind(this);
+        this.onChangePlayers = this.onChangePlayers.bind(this);
+
         console.log(this.props)
+
     }
 
     onSubmit = (e) => {
@@ -60,6 +66,7 @@ class MatchCreatePage extends Component {
                 });
         }
         e.preventDefault()
+
     }
 
     onChange = (e, value) => {
@@ -76,25 +83,29 @@ class MatchCreatePage extends Component {
             }
         }
         );
+        this.checkEmptyValues()
     };
 
     onChangeMatchDate = (e, value) => {
-        const match = this.state.match
-        this.setState({
-            match: {                
-                host: match.host,
-                host_uid: match.host_uid,
-                opponent: match.opponent,
-                opponent_uid: match.opponent_uid,
-                match_date: value,
-                players: match.players,
-                match_type: match.match_type            
-            }
-        }
-        );
+        const { match } = this.state;
+        match.match_date = value
+        // this.setState({
+        //     match: {                
+        //         host: match.host,
+        //         host_uid: match.host_uid,
+        //         opponent: match.opponent,
+        //         opponent_uid: match.opponent_uid,
+        //         match_date: value,
+        //         players: match.players,
+        //         match_type: match.match_type            
+        //     }
+        // }
+        // );
+        this.checkEmptyValues()
     };
     onChangePlayers = (e, value) => {
-        const match = this.state.match
+        const { match } = this.state;
+        console.log(value)
         this.setState({
             match: {                
                 host: match.host,
@@ -107,9 +118,10 @@ class MatchCreatePage extends Component {
             }
         }
         );
+        this.checkEmptyValues()
     };
     onChangeMatchType = (e, value) => {
-        const match = this.state.match
+        const { match } = this.state;
         this.setState({
             match: {                
                 host: match.host,
@@ -122,14 +134,24 @@ class MatchCreatePage extends Component {
             }
         }
         );
+        this.checkEmptyValues()
     };
 
-    render() {
-        const { users, loading} = this.state;
-        const { t } = this.props;
-        let match_date, match_type, players;
+    checkEmptyValues = () => {
+        const { match } = this.state;
+        let isDisabled = false
+        for(var key in match) {
+            if(match[key] === "") {
+                isDisabled = true
+            }
+        }
+        this.setState({ isDisabled: isDisabled })
+    }
 
-        console.log(this.props)
+    render() {
+        const { users, loading, isDisabled, match} = this.state;
+        const { t } = this.props;
+ 
         return (
             <div>
                 <FormControl>
@@ -149,37 +171,32 @@ class MatchCreatePage extends Component {
                         renderInput={(params) => <TextField {...params} label="Opponent" variant="outlined" />}
                     />
                     <FormLabel component="legend">{t('match_type')}</FormLabel>
-                    <RadioGroup defaultValue="friendly" aria-label="match_type" name="match_type1" value={match_type} onChange={this.onChangeMatchType}>
+                    <RadioGroup defaultValue="friendly" aria-label="match_type" name="match_type1" value={match.match_type} onChange={this.onChangeMatchType}>
                         <FormControlLabel value="ranked" control={<Radio />} label={t('ranked')} />
                         <FormControlLabel value="friendly" control={<Radio />} label={t('friendly')} />
                     </RadioGroup>
                     <FormLabel component="legend">{t('players')}</FormLabel>
-                    <RadioGroup defaultValue="1vs1" aria-label="players" name="players1" value={players} onChange={this.onChangePlayers}>
+                    <RadioGroup defaultValue="1vs1" aria-label="players" name="players1" value={match.players} onChange={this.onChangePlayers}>
                         <FormControlLabel value="1vs1" control={<Radio />} label="1vs1" />
                         <FormControlLabel value="2vs2" control={<Radio />} label="2vs2" />
                     </RadioGroup>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+                            disableToolbar
                             margin="normal"
+                            variant="inline"
                             id="date-picker-dialog"
                             label={t('match_date')}
                             format="dd/MM/yyyy"
-                            value={match_date}
+                            value={match.match_Date}
                             onChange={this.onChangeMatchDate}
                         />
                     </MuiPickersUtilsProvider>
-                    <Button type="submit" variant="contained" onClick={e => this.onSubmit(e)}>{t('create')}</Button>
+                    <Button disabled={isDisabled} type="submit" variant="contained" onClick={e => this.onSubmit(e)}>{t('create')}</Button>
                 </FormControl>
             </div>
         );
     }
 }
 
-const NewMatchLink = () => (
-    <p>
-        <Link to={ROUTES.MATCH_CREATE} style={{ color: '#FFF' }}>New Match!</Link>
-    </p>
-);
-
 export default withAuthUser(withTranslation()(MatchCreatePage));
-export { NewMatchLink };

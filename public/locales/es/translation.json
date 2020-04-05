@@ -7,5 +7,6 @@
     "friendly": "Amistoso",
     "match_type": "Tipo de partido",
     "players": "Jugadores",
-    "match_date": "Fecha"
+    "match_date": "Fecha",
+    "matches": "Partidos"
 }
