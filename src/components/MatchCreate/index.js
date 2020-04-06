@@ -35,9 +35,6 @@ class MatchCreatePage extends Component {
         };
         this.onChange = this.onChange.bind(this);
         this.onChangeMatchDate = this.onChangeMatchDate.bind(this);
-
-        console.log(this.props)
-
     }
 
     onSubmit = (e) => {
@@ -70,7 +67,6 @@ class MatchCreatePage extends Component {
     }
 
     onChange = (e, value) => {
-        console.log("MatchCreatePage -> onChange -> e", e.target.name)
         const { match, currentUser } = this.state
         const user = value || {}
         this.setState({
@@ -95,7 +91,6 @@ class MatchCreatePage extends Component {
     };
 
     onChangeMatchDetails = (e, value) => {
-        console.log("MatchCreatePage -> onChange -> e", e.target.name)
         const { match } = this.state;
         this.setState({
             match: {
@@ -104,17 +99,6 @@ class MatchCreatePage extends Component {
             }
         });
     };
-
-    checkEmptyValues = () => {
-        const { match } = this.state;
-        let isDisabled = false
-        for (var key in match) {
-            if (match[key] === "") {
-                isDisabled = true
-            }
-        }
-        this.setState({ isDisabled: isDisabled })
-    }
 
     render() {
         const { users, loading, match } = this.state;

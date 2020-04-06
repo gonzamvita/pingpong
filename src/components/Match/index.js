@@ -114,7 +114,6 @@ class FilterGroup extends Component {
     }
 
     handleChange(event) {
-        console.log(event.target.checked);
         this.props.onFilterChange(event.target.name, event.target.checked)
     }
 
