@@ -51,7 +51,7 @@ class MatchPage extends Component {
     }
 
     handleFilterChange(name, value) {
-        this.setState({ [name]: value }, this.doFilterChange())
+        this.setState({ [name]: value }, this.doFilterChange)
     }
 
     doFilterChange() {
@@ -128,11 +128,11 @@ class FilterGroup extends Component {
                     />
                     <FormControlLabel
                         control={<Switch checked={this.props.filters.finished} onChange={this.handleChange} name="finished" />}
-                        label="Finished Matches"
+                        label="Finished"
                     />
                     <FormControlLabel
                         control={<Switch checked={this.props.filters.ranked} onChange={this.handleChange} name="ranked" />}
-                        label="Ranked Matches"
+                        label="Ranked"
                     />
                 </FormGroup>
             </FormControl>
