@@ -89,20 +89,9 @@ class MatchCreatePage extends Component {
     onChangeMatchDate = (e, value) => {
         const { match } = this.state;
         match.match_date = value
-        // this.setState({
-        //     match: {                
-        //         host: match.host,
-        //         host_uid: match.host_uid,
-        //         opponent: match.opponent,
-        //         opponent_uid: match.opponent_uid,
-        //         match_date: value,
-        //         players: match.players,
-        //         match_type: match.match_type            
-        //     }
-        // }
-        // );
         this.checkEmptyValues()
     };
+    
     onChangePlayers = (e, value) => {
         const { match } = this.state;
         console.log(value)

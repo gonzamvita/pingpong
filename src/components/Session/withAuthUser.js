@@ -8,7 +8,7 @@ const withAuthUser = Component => {
     function WithAuthUser(props) { //componente, mayus recibe props devuelve algo que se renderiza
         const authUser = React.useContext(AuthUserContext)
         return (
-            <Component {...props} authUser={authUser} withTranslation={withTranslation}/>
+            <Component {...props} authUser={authUser} withTranslation={withTranslation} />
         );
     }
     return withFirebase(WithAuthUser);
