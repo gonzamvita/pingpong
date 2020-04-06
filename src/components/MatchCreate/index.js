@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import 'date-fns';
-import {TextField, Button, Typography, 
-    RadioGroup, Radio, FormControlLabel, FormLabel, FormControl} from '@material-ui/core';
+import {
+    TextField, Button, Typography,
+    RadioGroup, Radio, FormControlLabel, FormLabel, FormControl
+} from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import {
     MuiPickersUtilsProvider,
@@ -26,15 +28,13 @@ class MatchCreatePage extends Component {
                 opponent: '',
                 opponent_uid: '',
                 status: 'pending',
-                match_date: '',
+                match_date: new Date(),
                 players: '1vs1',
                 match_type: 'friendly'
             },
         };
         this.onChange = this.onChange.bind(this);
         this.onChangeMatchDate = this.onChangeMatchDate.bind(this);
-        this.onChangeMatchType = this.onChangeMatchType.bind(this);
-        this.onChangePlayers = this.onChangePlayers.bind(this);
 
         console.log(this.props)
 
@@ -70,67 +70,46 @@ class MatchCreatePage extends Component {
     }
 
     onChange = (e, value) => {
-        const match = this.state.match
+        console.log("MatchCreatePage -> onChange -> e", e.target.name)
+        const { match, currentUser } = this.state
+        const user = value || {}
         this.setState({
             match: {
-                host: this.state.currentUser.username,
-                host_uid: this.state.currentUser.uid,
-                opponent: value.username,
-                opponent_uid: value.uid,
-                match_date: match.match_date,
-                players: match.players,
-                match_type: match.match_type
+                ...match,
+                host: currentUser.username,
+                host_uid: currentUser.uid,
+                opponent: user.username,
+                opponent_uid: user.uid,
             }
-        }
-        );
-        this.checkEmptyValues()
+        });
     };
 
-    onChangeMatchDate = (e, value) => {
-        const { match } = this.state;
-        match.match_date = value
-        this.checkEmptyValues()
-    };
-    
-    onChangePlayers = (e, value) => {
-        const { match } = this.state;
-        console.log(value)
-        this.setState({
-            match: {                
-                host: match.host,
-                host_uid: match.host_uid,
-                opponent: match.opponent,
-                opponent_uid: match.opponent_uid,
-                match_date: match.match_date,
-                players: value,
-                match_type: match.match_type            
-            }
-        }
-        );
-        this.checkEmptyValues()
-    };
-    onChangeMatchType = (e, value) => {
+    onChangeMatchDate = (date) => {
         const { match } = this.state;
         this.setState({
-            match: {                
-                host: match.host,
-                host_uid: match.host_uid,
-                opponent: match.opponent,
-                opponent_uid: match.opponent_uid,
-                match_date: match.match_date,
-                players: match.players,
-                match_type: value            
+            match: {
+                ...match,
+                match_date: date
             }
-        }
-        );
-        this.checkEmptyValues()
+        });
+    };
+
+    onChangeMatchDetails = (e, value) => {
+        console.log("MatchCreatePage -> onChange -> e", e.target.name)
+        const { match } = this.state;
+        this.setState({
+            match: {
+                ...match,
+                [e.target.name]: value
+            }
+        });
     };
 
     checkEmptyValues = () => {
         const { match } = this.state;
         let isDisabled = false
-        for(var key in match) {
-            if(match[key] === "") {
+        for (var key in match) {
+            if (match[key] === "") {
                 isDisabled = true
             }
         }
@@ -138,14 +117,18 @@ class MatchCreatePage extends Component {
     }
 
     render() {
-        const { users, loading, isDisabled, match} = this.state;
+        const { users, loading, match } = this.state;
+        const isEmpty = (element) => element === '';
+        const isDisabled = () => {
+            return Object.values(match).some(isEmpty)
+        };
         const { t } = this.props;
- 
+
         return (
             <div>
                 <FormControl>
                     <Typography variant="h5" gutterBottom>
-                    {t('new_match')}
+                        {t('new_match')}
                     </Typography>
                     <FormLabel component="legend">{t('create_match')}</FormLabel>
                     <Autocomplete
@@ -157,31 +140,30 @@ class MatchCreatePage extends Component {
                         onOpen={this.onOpen}
                         style={{ width: 300 }}
                         getOptionLabel={(user) => user.username}
-                        renderInput={(params) => <TextField {...params} label="Opponent" variant="outlined" />}
+                        renderInput={(params) => <TextField {...params} label="Opponent" variant="outlined" name="opponent" />}
                     />
                     <FormLabel component="legend">{t('match_type')}</FormLabel>
-                    <RadioGroup defaultValue="friendly" aria-label="match_type" name="match_type1" value={match.match_type} onChange={this.onChangeMatchType}>
+                    <RadioGroup defaultValue="friendly" aria-label="match_type" name="match_type" value={match.match_type} onChange={this.onChangeMatchDetails}>
                         <FormControlLabel value="ranked" control={<Radio />} label={t('ranked')} />
                         <FormControlLabel value="friendly" control={<Radio />} label={t('friendly')} />
                     </RadioGroup>
                     <FormLabel component="legend">{t('players')}</FormLabel>
-                    <RadioGroup defaultValue="1vs1" aria-label="players" name="players1" value={match.players} onChange={this.onChangePlayers}>
+                    <RadioGroup defaultValue="1vs1" aria-label="players" name="players" value={match.players} onChange={this.onChangeMatchDetails}>
                         <FormControlLabel value="1vs1" control={<Radio />} label="1vs1" />
                         <FormControlLabel value="2vs2" control={<Radio />} label="2vs2" />
                     </RadioGroup>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
-                            disableToolbar
                             margin="normal"
                             variant="inline"
                             id="date-picker-dialog"
                             label={t('match_date')}
                             format="dd/MM/yyyy"
-                            value={match.match_Date}
+                            value={match.match_date}
                             onChange={this.onChangeMatchDate}
                         />
                     </MuiPickersUtilsProvider>
-                    <Button disabled={isDisabled} type="submit" variant="contained" onClick={e => this.onSubmit(e)}>{t('create')}</Button>
+                    <Button disabled={isDisabled()} type="submit" variant="contained" onClick={e => this.onSubmit(e)}>{t('create')}</Button>
                 </FormControl>
             </div>
         );

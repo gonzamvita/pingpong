@@ -51,9 +51,17 @@ class MatchPage extends Component {
     }
 
     handleFilterChange(name, value) {
-        this.setState({ [name]: value })
-        const newFilteredList = this.matchFilterFn[name](this.state.matches, this.matchFilterValues[name](value))
-        this.setState({ filteredMatches: newFilteredList })
+        this.setState({ [name]: value }, this.doFilterChange())
+    }
+
+    doFilterChange() {
+        const { mymatches, ranked, finished, matches } = this.state
+        let filters = { mymatches, ranked, finished }
+        let newFilteredMatches
+        for (const key in filters) {
+            newFilteredMatches = this.matchFilterFn[key](matches, this.matchFilterValues[key](filters[key]))
+        }
+        this.setState({ filteredMatches: newFilteredMatches })
     }
 
     render() {
