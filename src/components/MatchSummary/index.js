@@ -58,7 +58,7 @@ export default function MatchSummaryCard(props) {
                 //     </IconButton>
                 // }
                 title={match.host + " vs " + match.opponent}
-                subheader="September 14, 2016"
+                subheader={match.match_date}
             />
             {/* <CardMedia
                 className={classes.media}

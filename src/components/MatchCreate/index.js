@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import 'date-fns';
 import {TextField, Button, Typography, 
-    RadioGroup, Radio, FormControlLabel, FormLabel, FormControl} from '@material-ui/core';
+    RadioGroup, Radio, FormControlLabel, FormLabel, FormControl,
+    CssBaseline, Paper} from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
 import { withAuthUser } from '../Session';
 import * as ROUTES from '../../constants/routes';
 import { withTranslation } from 'react-i18next';
+import { makeStyles } from '@material-ui/core/styles';
 
 class MatchCreatePage extends Component {
     constructor(props) {
@@ -40,6 +41,8 @@ class MatchCreatePage extends Component {
 
     }
 
+
+    
     onSubmit = (e) => {
         const { match } = this.state;
         this.props.firebase
@@ -105,7 +108,6 @@ class MatchCreatePage extends Component {
     };
     onChangePlayers = (e, value) => {
         const { match } = this.state;
-        console.log(value)
         this.setState({
             match: {                
                 host: match.host,
@@ -152,49 +154,93 @@ class MatchCreatePage extends Component {
         const { users, loading, isDisabled, match} = this.state;
         const { t } = this.props;
  
+        const useStyles = makeStyles((theme) => ({
+            appBar: {
+              position: 'relative',
+            },
+            layout: {
+              width: 'auto',
+              marginLeft: theme.spacing(2),
+              marginRight: theme.spacing(2),
+              [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
+                width: 600,
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              },
+            },
+            paper: {
+              marginTop: theme.spacing(3),
+              marginBottom: theme.spacing(3),
+              padding: theme.spacing(2),
+              [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+                marginTop: theme.spacing(6),
+                marginBottom: theme.spacing(6),
+                padding: theme.spacing(3),
+              },
+            },
+            stepper: {
+              padding: theme.spacing(3, 0, 5),
+            },
+            buttons: {
+              display: 'flex',
+              justifyContent: 'flex-end',
+            },
+            button: {
+              marginTop: theme.spacing(3),
+              marginLeft: theme.spacing(1),
+            },
+          }));
+
         return (
-            <div>
-                <FormControl>
-                    <Typography variant="h5" gutterBottom>
-                    {t('new_match')}
-                    </Typography>
-                    <FormLabel component="legend">{t('create_match')}</FormLabel>
-                    <Autocomplete
-                        id="opponent"
-                        loading={loading}
-                        autoComplete={true}
-                        options={users}
-                        onChange={this.onChange}
-                        onOpen={this.onOpen}
-                        style={{ width: 300 }}
-                        getOptionLabel={(user) => user.username}
-                        renderInput={(params) => <TextField {...params} label="Opponent" variant="outlined" />}
-                    />
-                    <FormLabel component="legend">{t('match_type')}</FormLabel>
-                    <RadioGroup defaultValue="friendly" aria-label="match_type" name="match_type1" value={match.match_type} onChange={this.onChangeMatchType}>
-                        <FormControlLabel value="ranked" control={<Radio />} label={t('ranked')} />
-                        <FormControlLabel value="friendly" control={<Radio />} label={t('friendly')} />
-                    </RadioGroup>
-                    <FormLabel component="legend">{t('players')}</FormLabel>
-                    <RadioGroup defaultValue="1vs1" aria-label="players" name="players1" value={match.players} onChange={this.onChangePlayers}>
-                        <FormControlLabel value="1vs1" control={<Radio />} label="1vs1" />
-                        <FormControlLabel value="2vs2" control={<Radio />} label="2vs2" />
-                    </RadioGroup>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                            disableToolbar
-                            margin="normal"
-                            variant="inline"
-                            id="date-picker-dialog"
-                            label={t('match_date')}
-                            format="dd/MM/yyyy"
-                            value={match.match_Date}
-                            onChange={this.onChangeMatchDate}
-                        />
-                    </MuiPickersUtilsProvider>
-                    <Button disabled={isDisabled} type="submit" variant="contained" onClick={e => this.onSubmit(e)}>{t('create')}</Button>
-                </FormControl>
-            </div>
+            <React.Fragment>
+                <CssBaseline />
+                <main className={useStyles.layout}>
+                    <Paper className={useStyles.paper}>
+                        <div>
+                            <FormControl>
+                                <Typography variant="h5" gutterBottom>
+                                {t('new_match')}
+                                </Typography>
+                                <FormLabel component="legend">{t('create_match')}</FormLabel>
+                                <Autocomplete
+                                    id="opponent"
+                                    loading={loading}
+                                    autoComplete={true}
+                                    options={users}
+                                    onChange={this.onChange}
+                                    onOpen={this.onOpen}
+                                    style={{ width: 300 }}
+                                    getOptionLabel={(user) => user.username}
+                                    renderInput={(params) => <TextField {...params} label="Opponent" variant="outlined" />}
+                                />
+                                <FormLabel component="legend">{t('match_type')}</FormLabel>
+                                <RadioGroup defaultValue="friendly" aria-label="match_type" name="match_type1" value={match.match_type} onChange={this.onChangeMatchType}>
+                                    <FormControlLabel value="ranked" control={<Radio />} label={t('ranked')} />
+                                    <FormControlLabel value="friendly" control={<Radio />} label={t('friendly')} />
+                                </RadioGroup>
+                                <FormLabel component="legend">{t('players')}</FormLabel>
+                                <RadioGroup defaultValue="1vs1" aria-label="players" name="players1" value={match.players} onChange={this.onChangePlayers}>
+                                    <FormControlLabel value="1vs1" control={<Radio />} label="1vs1" />
+                                    <FormControlLabel value="2vs2" control={<Radio />} label="2vs2" />
+                                </RadioGroup>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <KeyboardDatePicker
+                                        disableToolbar
+                                        margin="normal"
+                                        variant="inline"
+                                        id="date-picker-dialog"
+                                        label={t('match_date')}
+                                        format="dd/MM/yyyy"
+                                        value={match.match_Date}
+                                        onChange={this.onChangeMatchDate}
+                                    />
+                                </MuiPickersUtilsProvider>
+                                <Button disabled={isDisabled} type="submit" variant="contained" onClick={e => this.onSubmit(e)}>{t('create')}</Button>
+                            </FormControl>
+                        </div>
+                    </Paper>
+                </main>
+            </React.Fragment>
         );
     }
 }
