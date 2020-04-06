@@ -74,8 +74,8 @@ class MatchCreatePage extends Component {
                 ...match,
                 host: currentUser.username,
                 host_uid: currentUser.uid,
-                opponent: user.username,
-                opponent_uid: user.uid,
+                opponent: user.username || '',
+                opponent_uid: user.uid || '',
             }
         });
     };
