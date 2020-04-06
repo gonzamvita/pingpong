@@ -27,13 +27,13 @@ class MatchPage extends Component {
         this.handleFilterChange = this.handleFilterChange.bind(this)
         this.matchFilterFn = {
             mymatches: (arr, value) => arr.filter(m => (value.test(m.host_uid) || value.test(m.host_uid))),
-            finished: (arr, value) => arr.filter(m => m.status === value),
-            ranked: (arr, value) => arr.filter(m => m.match_type === value),
+            finished: (arr, value) => arr.filter(m => value.test(m.status)),
+            ranked: (arr, value) => arr.filter(m => value.test(m.match_type)),
         }
         this.matchFilterValues = {
-            mymatches: (value) => value ? new RegExp(this.props.authUser.uid, 'g') : new RegExp(/\w*/, 'g'),
-            finished: (value) => value ? 'finished' : 'pending',
-            ranked: (value) => value ? 'ranked' : 'friendly'
+            mymatches: (value) => value ? this.props.authUser.uid : /w*/,
+            finished: (value) => value ? 'finished' : /w*/,
+            ranked: (value) => value ? 'ranked' : /w*/,
         }
     }
 
@@ -59,7 +59,11 @@ class MatchPage extends Component {
         let filters = { mymatches, ranked, finished }
         let newFilteredMatches = matches
         for (const key in filters) {
-            newFilteredMatches = this.matchFilterFn[key](newFilteredMatches, this.matchFilterValues[key](filters[key]))
+            newFilteredMatches =
+                this.matchFilterFn[key](
+                    newFilteredMatches,
+                    RegExp(this.matchFilterValues[key](filters[key]))
+                )
             console.log("MatchPage -> doFilterChange -> newFilteredMatches", key, filters[key], newFilteredMatches)
         }
         this.setState({ filteredMatches: newFilteredMatches })
@@ -93,13 +97,14 @@ const MatchList = ({ matches }) => (
         <Grid
             container
             spacing={3}
-            direction="row-reverse"
+            direction="row"
             justify="flex-start"
-            alignItems="stretch"
+            alignItems="flex-start"
+            alignContent="flex-start"
         >
             {
                 matches.map((match, i) => (
-                    <Grid item xs key={i}>
+                    <Grid item xs={12} sm={6} md={4} xl={2} key={i}>
                         <MatchSummaryCard match={match} />
                     </Grid>
                 ))
