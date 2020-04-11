@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Container } from '@material-ui/core';
 
 import LandingPage from '../Landing';
 import SignUpPage from '../SignUp';
@@ -18,15 +19,17 @@ const App = () => (
   <Router>
     <div>
       <HeaderAndDrawer />
-      <Route exact path={ROUTES.LANDING} component={LandingPage} />
-      <Route path={ROUTES.MATCH} component={MatchPage} />
-      <Route path={ROUTES.MATCH_CREATE} component={MatchCreatePage} />
-      <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-      <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-      <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-      <Route path={ROUTES.HOME} component={HomePage} />
-      <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-      <Route path={ROUTES.ADMIN} component={AdminPage} />
+      <Container maxWidth="xl">
+        <Route exact path={ROUTES.LANDING} component={LandingPage} />
+        <Route path={ROUTES.MATCH} component={MatchPage} />
+        <Route path={ROUTES.MATCH_CREATE} component={MatchCreatePage} />
+        <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+        <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+        <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+        <Route path={ROUTES.HOME} component={HomePage} />
+        <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+        <Route path={ROUTES.ADMIN} component={AdminPage} />
+      </Container>
     </div>
   </Router>
 );
