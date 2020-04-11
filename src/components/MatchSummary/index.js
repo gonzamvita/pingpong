@@ -46,6 +46,15 @@ export default function MatchSummaryCard(props) {
         setExpanded(!expanded);
     };
 
+    const formatTimestamp = (date) => {
+        if(typeof date === 'undefined' || date === '') {
+            return ""
+        } else {
+            const t = new Date(1970, 0, 1); // Epoch
+            t.setSeconds(date.seconds);// + date.nanoseconds*1000000000);
+            return t.toString()
+        }
+    }
     return (
         <Card className={classes.root}>
             <CardHeader
@@ -58,7 +67,7 @@ export default function MatchSummaryCard(props) {
                 //     </IconButton>
                 // }
                 title={match.host + " vs " + match.opponent}
-                subheader={match.match_date}
+                subheader={formatTimestamp(match.match_date)}
             />
             {/* <CardMedia
                 className={classes.media}

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import 'date-fns';
 import {TextField, Button, Typography, 
-    RadioGroup, Radio, FormControlLabel, FormLabel, FormControl,
-    CssBaseline, Paper} from '@material-ui/core';
+    RadioGroup, Radio, FormControlLabel, FormLabel, FormControl} from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import {
     MuiPickersUtilsProvider,
@@ -12,8 +11,6 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { withAuthUser } from '../Session';
 import * as ROUTES from '../../constants/routes';
 import { withTranslation } from 'react-i18next';
-import { makeStyles } from '@material-ui/core/styles';
-
 class MatchCreatePage extends Component {
     constructor(props) {
         super(props);
